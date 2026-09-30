@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>🧧</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{height:100%}
+body{
+  margin:0;min-height:100%;overflow-x:hidden;
+  font-family:'Quicksand','Trebuchet MS',system-ui,sans-serif;
+  background:radial-gradient(ellipse at 50% 15%,#7a0e14,#3d0509 75%);
+  color:#ffe9c7;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;text-align:center;
+}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:380px}
+.sparks{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;border-radius:50%;background:#ffd27a;opacity:.5;animation:tw ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
+
+h1{font-size:1.4rem;margin:0;font-weight:700;letter-spacing:.3px}
+.sub{opacity:.85;font-size:.95rem;margin:0 0 6px}
+
+/* envelope */
+.envelope{
+  position:relative;width:240px;height:320px;cursor:pointer;user-select:none;
+  transition:transform .2s;
+}
+.envelope:active{transform:scale(.97)}
+.env-body{
+  position:absolute;inset:0;border-radius:14px;
+  background:linear-gradient(160deg,#c21f26,#8e0f16 70%);
+  box-shadow:0 14px 30px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,210,122,.35);
+  overflow:hidden;
+}
+.env-pattern{
+  position:absolute;inset:0;opacity:.18;
+  background-image:
+    radial-gradient(circle at 20% 20%, gold 0, transparent 3%),
+    radial-gradient(circle at 80% 30%, gold 0, transparent 3%),
+    radial-gradient(circle at 40% 70%, gold 0, transparent 3%),
+    radial-gradient(circle at 70% 80%, gold 0, transparent 3%),
+    radial-gradient(circle at 10% 60%, gold 0, transparent 3%);
+  background-size:60px 60px;
+}
+.env-flap{
+  position:absolute;top:0;left:0;right:0;height:60%;
+  background:linear-gradient(160deg,#d8262d,#a3121a 75%);
+  clip-path:polygon(0 0,100% 0,50% 62%);
+  transform-origin:top center;
+  transition:transform .7s cubic-bezier(.3,1.4,.4,1);
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  z-index:3;
+}
+.envelope.open .env-flap{transform:rotateX(150deg)}
+.seal{
+  position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);
+  width:64px;height:64px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ffd27a,#d9a441 70%);
+  display:grid;place-items:center;font-size:1.6rem;color:#7a0e14;font-weight:800;
+  box-shadow:0 4px 10px rgba(0,0,0,.35);
+  z-index:4;
+}
+.card{
+  position:absolute;left:10px;right:10px;bottom:-10px;
+  background:linear-gradient(160deg,#fff7ea,#ffe9c7);
+  color:#5a2a1a;border-radius:10px;padding:22px 16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.35);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s .15s, transform .6s .15s;
+  z-index:2;
+}
+.envelope.open .card{opacity:1;transform:translateY(-58px)}
+.card .en{font-size:1.15rem;font-weight:700;line-height:1.5;margin:0 0 12px}
+.card .zh{font-size:1.15rem;font-weight:700;line-height:1.7;margin:0}
+.card .py{font-size:.8rem;opacity:.75;margin:6px 0 0;font-style:italic}
+.hint{font-size:.9rem;opacity:.85;transition:opacity .5s}
+.petals{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.petal{position:absolute;top:-30px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(260deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="sparks" id="sparks"></div>
+<div class="petals" id="petals"></div>
+
+<div class="wrap">
+  <h1>🧧 A little something</h1>
+  <p class="sub">Tap the envelope</p>
+  <div class="envelope" id="envelope" onclick="openEnvelope()">
+    <div class="env-body"><div class="env-pattern"></div></div>
+    <div class="env-flap"></div>
+    <div class="seal">福</div>
+    <div class="card">
+      <p class="en">In a world full of roses, you're the one that never fades.</p>
+      <p class="zh">在满是玫瑰的世界里，你是那朵永不凋谢的花。</p>
+      <p class="py">Zài mǎn shì méiguī de shìjiè lǐ, nǐ shì nà duǒ yǒng bù diāoxiè de huā.</p>
+    </div>
+  </div>
+  <p class="hint" id="hint">👆 tap it</p>
+</div>
+
+<script>
+const sparks=document.getElementById('sparks');
+for(let i=0;i<40;i++){
+  const s=document.createElement('div');
+  s.className='spark';
+  const size=1+Math.random()*2.5;
+  s.style.width=s.style.height=size+'px';
+  s.style.left=Math.random()*100+'%';
+  s.style.top=Math.random()*100+'%';
+  s.style.animationDuration=(1.5+Math.random()*2.5)+'s';
+  s.style.animationDelay=(-Math.random()*3)+'s';
+  sparks.appendChild(s);
+}
+
+let opened=false;
+function openEnvelope(){
+  if(opened)return;
+  opened=true;
+  document.getElementById('envelope').classList.add('open');
+  document.getElementById('hint').style.opacity=0;
+  petalBurst();
+}
+
+function petalBurst(){
+  const box=document.getElementById('petals');
+  const items=['🌹','✨','🏮','💗'];
+  for(let i=0;i<24;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.className='petal';
+      p.textContent=items[i%items.length];
+      p.style.left=Math.random()*100+'vw';
+      p.style.fontSize=(14+Math.random()*18)+'px';
+      p.style.animationDuration=(3+Math.random()*2.5)+'s';
+      box.appendChild(p);
+      setTimeout(()=>p.remove(),6000);
+    }, i*60);
+  }
+}
+</script>
+</body>
+</html>
