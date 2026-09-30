@@ -1,151 +1,736 @@
+```html
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🧧</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For You ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Parisienne&display=swap" rel="stylesheet">
+
 <style>
-:root{
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+* {
+    box-sizing: border-box;
 }
-*{box-sizing:border-box}
-html{height:100%}
-body{
-  margin:0;min-height:100%;overflow-x:hidden;
-  font-family:'Quicksand','Trebuchet MS',system-ui,sans-serif;
-  background:radial-gradient(ellipse at 50% 15%,#7a0e14,#3d0509 75%);
-  color:#ffe9c7;
-  display:flex;align-items:center;justify-content:center;
-  padding:24px;text-align:center;
-}
-.wrap{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:380px}
-.sparks{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.spark{position:absolute;border-radius:50%;background:#ffd27a;opacity:.5;animation:tw ease-in-out infinite}
-@keyframes tw{0%,100%{opacity:.15}50%{opacity:.7}}
 
-h1{font-size:1.4rem;margin:0;font-weight:700;letter-spacing:.3px}
-.sub{opacity:.85;font-size:.95rem;margin:0 0 6px}
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
 
-/* envelope */
-.envelope{
-  position:relative;width:240px;height:320px;cursor:pointer;user-select:none;
-  transition:transform .2s;
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(circle at 50% 30%, #8f263f 0%, transparent 35%),
+        radial-gradient(circle at 20% 80%, #5d162d 0%, transparent 35%),
+        linear-gradient(145deg, #210711, #3a0b1b 45%, #18050d);
+
+    color: #fff4f5;
+    font-family: "Cormorant Garamond", serif;
 }
-.envelope:active{transform:scale(.97)}
-.env-body{
-  position:absolute;inset:0;border-radius:14px;
-  background:linear-gradient(160deg,#c21f26,#8e0f16 70%);
-  box-shadow:0 14px 30px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,210,122,.35);
-  overflow:hidden;
+
+/* ---------- Background ---------- */
+
+.background-glow {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(255, 105, 145, 0.08);
+    filter: blur(80px);
+    animation: breathe 5s ease-in-out infinite;
+    pointer-events: none;
 }
-.env-pattern{
-  position:absolute;inset:0;opacity:.18;
-  background-image:
-    radial-gradient(circle at 20% 20%, gold 0, transparent 3%),
-    radial-gradient(circle at 80% 30%, gold 0, transparent 3%),
-    radial-gradient(circle at 40% 70%, gold 0, transparent 3%),
-    radial-gradient(circle at 70% 80%, gold 0, transparent 3%),
-    radial-gradient(circle at 10% 60%, gold 0, transparent 3%);
-  background-size:60px 60px;
+
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(0.9);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
 }
-.env-flap{
-  position:absolute;top:0;left:0;right:0;height:60%;
-  background:linear-gradient(160deg,#d8262d,#a3121a 75%);
-  clip-path:polygon(0 0,100% 0,50% 62%);
-  transform-origin:top center;
-  transition:transform .7s cubic-bezier(.3,1.4,.4,1);
-  box-shadow:0 4px 10px rgba(0,0,0,.3);
-  z-index:3;
+
+/* ---------- Floating particles ---------- */
+
+.particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
 }
-.envelope.open .env-flap{transform:rotateX(150deg)}
-.seal{
-  position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);
-  width:64px;height:64px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#ffd27a,#d9a441 70%);
-  display:grid;place-items:center;font-size:1.6rem;color:#7a0e14;font-weight:800;
-  box-shadow:0 4px 10px rgba(0,0,0,.35);
-  z-index:4;
+
+.particle {
+    position: absolute;
+    bottom: -30px;
+    opacity: 0;
+    animation: floatUp linear forwards;
 }
-.card{
-  position:absolute;left:10px;right:10px;bottom:-10px;
-  background:linear-gradient(160deg,#fff7ea,#ffe9c7);
-  color:#5a2a1a;border-radius:10px;padding:22px 16px;
-  box-shadow:0 10px 24px rgba(0,0,0,.35);
-  opacity:0;transform:translateY(20px);
-  transition:opacity .6s .15s, transform .6s .15s;
-  z-index:2;
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.7;
+    }
+
+    80% {
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translateY(-115vh) scale(1.2) rotate(25deg);
+        opacity: 0;
+    }
 }
-.envelope.open .card{opacity:1;transform:translateY(-58px)}
-.card .en{font-size:1.15rem;font-weight:700;line-height:1.5;margin:0 0 12px}
-.card .zh{font-size:1.15rem;font-weight:700;line-height:1.7;margin:0}
-.card .py{font-size:.8rem;opacity:.75;margin:6px 0 0;font-style:italic}
-.hint{font-size:.9rem;opacity:.85;transition:opacity .5s}
-.petals{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
-.petal{position:absolute;top:-30px;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(260deg);opacity:0}}
+
+/* ---------- Main ---------- */
+
+.container {
+    position: relative;
+    z-index: 5;
+
+    width: min(90%, 430px);
+    text-align: center;
+
+    transition:
+        transform 0.8s ease,
+        opacity 0.8s ease;
+}
+
+.intro {
+    transition:
+        opacity 0.6s ease,
+        transform 0.8s cubic-bezier(.22,1,.36,1);
+}
+
+.small-title {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: #f8b9c8;
+    opacity: 0.85;
+}
+
+.main-title {
+    margin: 0;
+
+    font-family: "Parisienne", cursive;
+    font-size: clamp(48px, 13vw, 68px);
+    font-weight: 400;
+
+    color: #fff7f8;
+
+    text-shadow:
+        0 0 20px rgba(255, 145, 170, 0.35);
+}
+
+.subtitle {
+    margin: 8px 0 34px;
+
+    font-size: 18px;
+    color: #f6dce2;
+    opacity: 0.8;
+}
+
+/* ---------- Heart button ---------- */
+
+.heart-wrapper {
+    position: relative;
+
+    width: 150px;
+    height: 150px;
+
+    margin: 0 auto;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.35s ease,
+        opacity 0.6s ease;
+}
+
+.heart-wrapper:hover {
+    transform: scale(1.06);
+}
+
+.heart-wrapper:active {
+    transform: scale(0.94);
+}
+
+.heart-glow {
+    position: absolute;
+    inset: 15px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 91, 130, 0.25);
+    filter: blur(25px);
+
+    animation: heartGlow 2s ease-in-out infinite;
+}
+
+@keyframes heartGlow {
+    0%, 100% {
+        transform: scale(0.9);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+.heart {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 88px;
+    height: 88px;
+
+    transform: translate(-50%, -46%) rotate(-45deg);
+
+    background: linear-gradient(
+        135deg,
+        #ff8fa8,
+        #e83f68
+    );
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35),
+        inset 0 2px 10px rgba(255,255,255,0.25);
+
+    animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+
+    position: absolute;
+
+    width: 88px;
+    height: 88px;
+
+    background: inherit;
+
+    border-radius: 50%;
+}
+
+.heart::before {
+    top: -44px;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: 44px;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: translate(-50%, -46%) rotate(-45deg) scale(1);
+    }
+
+    15% {
+        transform: translate(-50%, -46%) rotate(-45deg) scale(1.08);
+    }
+
+    30% {
+        transform: translate(-50%, -46%) rotate(-45deg) scale(1);
+    }
+
+    45% {
+        transform: translate(-50%, -46%) rotate(-45deg) scale(1.05);
+    }
+}
+
+.heart-icon {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 32px;
+
+    pointer-events: none;
+}
+
+.tap-text {
+    margin-top: 25px;
+
+    font-size: 16px;
+    letter-spacing: 1px;
+
+    color: #f5cbd4;
+
+    animation: softPulse 2s ease-in-out infinite;
+}
+
+@keyframes softPulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ---------- Message ---------- */
+
+.message {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: min(90vw, 430px);
+
+    transform:
+        translate(-50%, -42%)
+        scale(0.7);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(.22,1,.36,1);
+}
+
+.message.show {
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.message-card {
+    position: relative;
+
+    padding: 42px 28px 38px;
+
+    border: 1px solid rgba(255, 190, 205, 0.22);
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.10),
+            rgba(255,255,255,0.035)
+        );
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.message-card::before {
+    content: "♡";
+
+    position: absolute;
+
+    top: -22px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e95073;
+
+    color: white;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 8px 25px rgba(233, 80, 115, 0.4);
+}
+
+.message-label {
+    margin: 0 0 18px;
+
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: #f3aabb;
+}
+
+.message-en {
+    margin: 0;
+
+    font-family: "Parisienne", cursive;
+    font-size: clamp(32px, 9vw, 46px);
+    line-height: 1.2;
+
+    color: #fff8fa;
+}
+
+.divider {
+    width: 50px;
+    height: 1px;
+
+    margin: 25px auto;
+
+    background: rgba(255, 190, 205, 0.6);
+}
+
+.message-zh {
+    margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 23px;
+    line-height: 1.7;
+    font-weight: 600;
+
+    color: #ffe8ed;
+}
+
+.final-heart {
+    margin-top: 25px;
+
+    font-size: 22px;
+
+    animation: finalHeartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes finalHeartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.25);
+    }
+}
+
+/* ---------- Hide intro ---------- */
+
+.container.hide {
+    opacity: 0;
+    transform: scale(0.85);
+    pointer-events: none;
+}
+
+/* ---------- Burst ---------- */
+
+.burst {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+.burst-item {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    font-size: 22px;
+
+    animation: burst 1.2s cubic-bezier(.1,.8,.2,1) forwards;
+}
+
+@keyframes burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(
+                calc(-50% + var(--x)),
+                calc(-50% + var(--y))
+            )
+            scale(1.1)
+            rotate(var(--r));
+
+        opacity: 0;
+    }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 500px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .message-card {
+        padding: 38px 22px 32px;
+    }
+
+    .message-zh {
+        font-size: 21px;
+    }
+
+    .subtitle {
+        margin-bottom: 30px;
+    }
+}
 </style>
 </head>
-<body>
-<div class="sparks" id="sparks"></div>
-<div class="petals" id="petals"></div>
 
-<div class="wrap">
-  <h1>🧧 A little something</h1>
-  <p class="sub">Tap the envelope</p>
-  <div class="envelope" id="envelope" onclick="openEnvelope()">
-    <div class="env-body"><div class="env-pattern"></div></div>
-    <div class="env-flap"></div>
-    <div class="seal">福</div>
-    <div class="card">
-      <p class="en">In a world full of roses, you're the one that never fades.</p>
-      <p class="zh">在满是玫瑰的世界里，你是那朵永不凋谢的花。</p>
-      <p class="py">Zài mǎn shì méiguī de shìjiè lǐ, nǐ shì nà duǒ yǒng bù diāoxiè de huā.</p>
+<body>
+
+<div class="background-glow"></div>
+
+<div class="particles" id="particles"></div>
+
+<div class="container" id="intro">
+
+    <div class="small-title">
+        A little surprise
     </div>
-  </div>
-  <p class="hint" id="hint">👆 tap it</p>
+
+    <h1 class="main-title">
+        Just for you
+    </h1>
+
+    <p class="subtitle">
+        I have something to tell you...
+    </p>
+
+    <div class="heart-wrapper" onclick="revealMessage()">
+
+        <div class="heart-glow"></div>
+
+        <div class="heart"></div>
+
+        <div class="heart-icon">
+            ♡
+        </div>
+
+    </div>
+
+    <div class="tap-text">
+        tap the heart
+    </div>
+
 </div>
 
+
+<div class="message" id="message">
+
+    <div class="message-card">
+
+        <p class="message-label">
+            For the one who never fades
+        </p>
+
+        <p class="message-en">
+            In a world full of roses,
+            you're the one that never fades.
+        </p>
+
+        <div class="divider"></div>
+
+        <p class="message-zh">
+            在满是玫瑰的世界里，你是那朵永不凋谢的花。
+        </p>
+
+        <div class="final-heart">
+            🌹 ❤️
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="burst" id="burst"></div>
+
+
 <script>
-const sparks=document.getElementById('sparks');
-for(let i=0;i<40;i++){
-  const s=document.createElement('div');
-  s.className='spark';
-  const size=1+Math.random()*2.5;
-  s.style.width=s.style.height=size+'px';
-  s.style.left=Math.random()*100+'%';
-  s.style.top=Math.random()*100+'%';
-  s.style.animationDuration=(1.5+Math.random()*2.5)+'s';
-  s.style.animationDelay=(-Math.random()*3)+'s';
-  sparks.appendChild(s);
+
+/* ---------- Floating background ---------- */
+
+const particles = document.getElementById("particles");
+
+const symbols = [
+    "♡",
+    "✦",
+    "✧",
+    "🌸",
+    "·"
+];
+
+function createParticle() {
+
+    const particle = document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.textContent =
+        symbols[Math.floor(Math.random() * symbols.length)];
+
+    particle.style.left =
+        Math.random() * 100 + "vw";
+
+    particle.style.fontSize =
+        (10 + Math.random() * 16) + "px";
+
+    particle.style.animationDuration =
+        (6 + Math.random() * 7) + "s";
+
+    particle.style.animationDelay =
+        Math.random() * 2 + "s";
+
+    particles.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 14000);
 }
 
-let opened=false;
-function openEnvelope(){
-  if(opened)return;
-  opened=true;
-  document.getElementById('envelope').classList.add('open');
-  document.getElementById('hint').style.opacity=0;
-  petalBurst();
+setInterval(createParticle, 450);
+
+for (let i = 0; i < 15; i++) {
+    setTimeout(createParticle, i * 250);
 }
 
-function petalBurst(){
-  const box=document.getElementById('petals');
-  const items=['🌹','✨','🏮','💗'];
-  for(let i=0;i<24;i++){
-    setTimeout(()=>{
-      const p=document.createElement('div');
-      p.className='petal';
-      p.textContent=items[i%items.length];
-      p.style.left=Math.random()*100+'vw';
-      p.style.fontSize=(14+Math.random()*18)+'px';
-      p.style.animationDuration=(3+Math.random()*2.5)+'s';
-      box.appendChild(p);
-      setTimeout(()=>p.remove(),6000);
-    }, i*60);
-  }
+
+/* ---------- Heart burst ---------- */
+
+function heartBurst() {
+
+    const burst = document.getElementById("burst");
+
+    const icons = [
+        "❤️",
+        "♡",
+        "🌹",
+        "✨",
+        "💗",
+        "✦"
+    ];
+
+    for (let i = 0; i < 28; i++) {
+
+        const item = document.createElement("div");
+
+        item.className = "burst-item";
+
+        item.textContent =
+            icons[Math.floor(Math.random() * icons.length)];
+
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        const distance =
+            100 + Math.random() * 230;
+
+        const x =
+            Math.cos(angle) * distance;
+
+        const y =
+            Math.sin(angle) * distance;
+
+        item.style.setProperty(
+            "--x",
+            x + "px"
+        );
+
+        item.style.setProperty(
+            "--y",
+            y + "px"
+        );
+
+        item.style.setProperty(
+            "--r",
+            (Math.random() * 180 - 90) + "deg"
+        );
+
+        item.style.animationDelay =
+            Math.random() * 0.15 + "s";
+
+        burst.appendChild(item);
+
+        setTimeout(() => {
+            item.remove();
+        }, 1500);
+    }
 }
+
+
+/* ---------- Reveal ---------- */
+
+let opened = false;
+
+function revealMessage() {
+
+    if (opened) return;
+
+    opened = true;
+
+    heartBurst();
+
+    const intro =
+        document.getElementById("intro");
+
+    const message =
+        document.getElementById("message");
+
+    intro.classList.add("hide");
+
+    setTimeout(() => {
+
+        message.classList.add("show");
+
+    }, 450);
+}
+
 </script>
+
 </body>
 </html>
+```
